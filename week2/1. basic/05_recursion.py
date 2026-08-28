@@ -23,38 +23,17 @@
 """
 
 def factorial(n):
-    """
-    재귀를 사용한 팩토리얼 계산
-    
-    Args:
-        n: 양의 정수
-    
-    Returns:
-        n의 팩토리얼 값
-    """
-    # TODO: base case를 작성하세요
-    # n이 0이거나 1이면 1을 반환
-    pass
-    
-    # TODO: recursive case를 작성하세요
-    pass
+    if n > 1 :
+        return n * factorial(n-1)
+    else:
+        return n
 
 def fibonacci(n):
-    """
-    재귀를 사용한 피보나치 수 계산
-    
-    Args:
-        n: 구하고자 하는 피보나치 수의 인덱스
-    
-    Returns:
-        n번째 피보나치 수
-    """
-    # TODO: base case를 작성하세요
-    # n이 0이면 0, n이 1이면 1 반환
-    pass
-    
-    # TODO: recursive case를 작성하세요
-    pass
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+
 
 # 테스트 케이스
 if __name__ == "__main__":
@@ -64,8 +43,7 @@ if __name__ == "__main__":
         result = factorial(i)
         print(f"{i}! = {result}")
     print()
-    
-    # 피보나치 테스트
+     # 피보나치 테스트
     print("=== 피보나치 수열 ===")
     for i in range(10):
         result = fibonacci(i)
