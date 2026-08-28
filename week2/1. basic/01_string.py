@@ -24,7 +24,32 @@
 - 문자열을 뒤집어서 비교하거나, 양 끝에서 시작해 중앙으로 이동하며 비교하세요
 """
 
-def is_palindrome(s):
+def is_palindrome(s:str):
+    lowerText = s.lower()
+    listText = list(lowerText)
+    filterList = []
+
+
+    for x in listText:
+        if (x.isalnum()):
+            filterList.append(x)
+    
+    reverseList = list(filterList)[::-1]
+    start = 0
+    end = len(filterList) - 1
+
+    for x in range(end):
+        start += 1
+        end -= 1
+        if reverseList[start] != reverseList[end]:
+            return False
+    return True
+
+            
+            
+
+    
+
     """
     문자열이 회문인지 판별하는 함수
     
