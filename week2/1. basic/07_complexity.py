@@ -1,3 +1,5 @@
+import sys
+sys.setrecursionlimit(10**6)
 """
 [복잡도 분석 - Big O, 시간 복잡도, 공간 복잡도]
 
@@ -15,98 +17,119 @@
 예제:
 입력: [4, 3, 2, 7, 8, 2, 3, 1]
 출력: [2, 3]
-
-힌트:
-- 방법1: 이중 반복문 (O(n²) 시간, O(1) 공간)
-- 방법2: 정렬 후 탐색 (O(n log n) 시간, O(1) 공간)
-- 방법3: 해시 집합 사용 (O(n) 시간, O(n) 공간)
 """
 
+
 def find_duplicates_brute_force(nums):
-    """
-    방법1: 이중 반복문 사용
-    시간 복잡도: O(n²)
-    공간 복잡도: O(k) - k는 중복 원소 개수
-    """
+
     duplicates = []
     n = len(nums)
-    
-    # TODO: 이중 반복문으로 중복 찾기
-    ## i번째 원소와 i+1 이후의 모든 원소를 비교
-    ## 같은 원소를 찾으면 duplicates에 추가 (중복 추가 방지 필요)
-    pass
-    
+
+    def brute_force(i):
+        if i >= n:
+            return
+
+        for idx in range(i + 1, n):
+            if nums[i] == nums[idx]:
+                if nums[i] not in duplicates:
+                    duplicates.append(nums[i])
+
+        brute_force(i+1)
+
+    brute_force(0)
+
     return duplicates
+
 
 def find_duplicates_sorting(nums):
-    """
-    방법2: 정렬 후 인접 원소 비교
-    시간 복잡도: O(n log n) - 정렬
-    공간 복잡도: O(1) - 정렬을 in-place로 수행
-    """
+
     if not nums:
         return []
-    
-    # TODO: 배열을 정렬하세요 (nums.sort() 사용)
-    pass
-    
-    duplicates = []
-    
-    # TODO: 인접한 원소를 비교하여 중복 찾기
-    # i와 i+1 원소가 같고, duplicates에 없으면 추가
-    pass
-    
-    return duplicates
+
+    duplicates = set()
+
+    seen = set()
+
+    def find_Dup(n):
+        # n = 0 len(nums) = 1000
+        if n >= len(nums):
+            return 0
+        else:
+            if nums[n] in seen:
+                duplicates.add(nums[n])
+            else:
+                seen.add(nums[n])
+        return find_Dup(n + 1)
+    find_Dup(0)
+
+    return list(duplicates)
+
 
 def find_duplicates_hash(nums):
-    """
-    방법3: 해시 집합 사용
-    시간 복잡도: O(n)
-    공간 복잡도: O(n)
-    """
-    seen = set()
+    digitCount = len(str(max(nums)))
+
+    numList = [[[] for _ in range(10)] for _ in range(digitCount)]
+    result = []
     duplicates = set()
-    
-    # TODO: 각 원소를 순회하면서
-    ## 이미 seen에 있으면 duplicates에 추가
-    ## 없으면 seen에 추가
-    pass
-    
+    seen = set()
+
+    for n in range(digitCount):
+
+        for i in nums:
+            strNum = str(i).zfill(digitCount)  # 3자리 무조건 채우기
+            strLastNum = strNum[len(strNum) - 1 - n]
+            numList[n][int(strLastNum)].append(strNum)
+        result = []
+        for i in numList[n]:
+            result.extend(i)
+
+    def find_Dup(n):
+        if n >= len(result):
+            return 0
+        else:
+            if result[n] in seen:
+                duplicates.add(int(result[n]))
+            else:
+                seen.add(result[n])
+        return find_Dup(n + 1)
+    find_Dup(0)
+
+    # 답
     return list(duplicates)
+
 
 def measure_time(func, nums, method_name):
     """실행 시간 측정 헬퍼 함수"""
-    result = func(nums[:])  # 복사본 전달
+    result = func(nums[:])
     print(f"{method_name}: {sorted(result)}")
     print()
 
-# 테스트 케이스
+
 if __name__ == "__main__":
-    # 테스트 케이스 1: 작은 배열
+
     print("=== 테스트 케이스 1: 작은 배열 ===")
     nums1 = [4, 3, 2, 7, 8, 2, 3, 1]
     print(f"입력: {nums1}\n")
-    
+
     result1 = find_duplicates_brute_force(nums1)
     print(f"방법1 (Brute Force): {sorted(result1)}")
-    
+
     result2 = find_duplicates_sorting(nums1)
     print(f"방법2 (Sorting): {sorted(result2)}")
-    
+
     result3 = find_duplicates_hash(nums1)
     print(f"방법3 (Hash): {sorted(result3)}")
     print()
-    
-    # 테스트 케이스 2: 큰 배열로 성능 비교
+
     print("=== 테스트 케이스 2: 성능 비교 (n=1000) ===")
     import random
     random.seed(42)  # 동일한 결과를 위한 시드 설정
     nums2 = [random.randint(1, 500) for _ in range(1000)]
-    
+
     measure_time(find_duplicates_brute_force, nums2, "방법1 (O(n²))")
     measure_time(find_duplicates_sorting, nums2, "방법2 (O(n log n))")
     measure_time(find_duplicates_hash, nums2, "방법3 (O(n))")
-    
+
     print("=== 복잡도 분석 요약 ===")
     print("방법1 - Brute Force:")
     print("  시간: O(n²), 공간: O(k)")
@@ -119,5 +142,3 @@ if __name__ == "__main__":
     print("방법3 - Hash:")
     print("  시간: O(n), 공간: O(n)")
     print("  특징: 가장 빠르지만 메모리 사용")
-
-
