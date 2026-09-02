@@ -17,38 +17,37 @@
 입력: [3, 5, 1, 8, 2, 9, 4]
 출력: 9
 
-힌트:
-- Base case: left == right일 때 arr[left] 반환
-- 배열을 반으로 나누어 재귀 호출
-- 왼쪽과 오른쪽의 최댓값 중 큰 값 반환
 """
 
 def find_max_divide_conquer(arr, left, right):
-    """
-    분할 정복으로 최댓값 찾기
+    def mergeSort(arr: list):
+        if len(arr) <= 1:
+            return arr
+
+        mid: int = len(arr) // 2
+        left: list = arr[:mid]
+        right: list = arr[mid:]
+
+        return merge(mergeSort(left), mergeSort(right))
+
+    def merge(left:list, right:list):
+        result:list = []
+        i, j = 0, 0
+
+        while i < len(left) and j < len(right):
+            if left[i] < right[j]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+        result.extend(left[i:])
+        result.extend(right[j:])
+
+        return result
+    result1 = mergeSort(arr)
+    return result1[len(result1)-1]
     
-    Args:
-        arr: 배열
-        left: 시작 인덱스
-        right: 끝 인덱스
-    
-    Returns:
-        최댓값
-    """
-    # TODO: base case - 원소가 하나면 그 값 반환
-    pass
-    
-    # TODO: 중간 지점 계산
-    pass
-    
-    # TODO: 왼쪽 절반의 최댓값
-    pass
-        
-    # TODO: 오른쪽 절반의 최댓값
-    pass
-    
-    # TODO: 둘 중 큰 값 반환
-    pass
 
 # 테스트 케이스
 if __name__ == "__main__":
@@ -71,5 +70,4 @@ if __name__ == "__main__":
     result3 = find_max_divide_conquer(arr3, 0, len(arr3) - 1)
     print(f"배열: {arr3}")
     print(f"최댓값: {result3}")
-
 
