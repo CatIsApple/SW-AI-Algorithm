@@ -24,10 +24,6 @@
 시작: 0
 BFS: [0, 1, 2, 3]
 
-힌트:
-- Week2의 큐 사용
-- 방문 체크 필요
-- 가까운 것부터 방문
 """
 
 from collections import deque
@@ -44,16 +40,19 @@ def bfs(graph, start):
         방문 순서 리스트
     """
     visited = []
-    
-    # TODO: 큐 생성 및 시작 정점 추가
-    ## 방문한 정점 집합
-    pass
-
-    # TODO: 큐가 빌 때까지 반복
-    ## 큐에서 정점 꺼내기
-    ## 인접한 정점들 확인
-    ## 방문하지 않은 정점이면 큐에 추가
-    pass
+    queue = deque()
+    queue.append(start)
+    visited.append(start)
+    while queue:
+        current = queue.popleft()
+        discovered = graph.get(current, [])
+        new_nodes = []
+        for i in discovered:
+            if i not in visited:
+                new_nodes.append(i)
+        queue.extend(new_nodes)
+        visited.extend(new_nodes)
+        
     
     return visited
 
