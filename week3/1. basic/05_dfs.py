@@ -23,11 +23,6 @@
 
 시작: 0
 DFS: [0, 1, 2, 3] (순서는 구현에 따라 다를 수 있음)
-
-힌트:
-- 재귀로 구현
-- 방문 체크 필요
-- 깊이 우선으로 방문
 """
 
 def dfs(graph, start, visited=None):
@@ -42,15 +37,20 @@ def dfs(graph, start, visited=None):
     Returns:
         방문 순서 리스트
     """
-    # TODO: visited가 None이면 초기화
-    pass
+    if visited == None:
+        visited = []
+    visited.append(start)
     
-    # TODO: 현재 정점 방문
-    pass
+    if start == None:
+        return 0
+
+    current = start
+    discovered = graph.get(current, [])
+    for i in discovered:
+        if i not in visited:
+                dfs(graph, i, visited)
+        
     
-    # TODO: 인접한 정점들에 대해 재귀
-    ## 방문하지 않은 정점이면 재귀 호출
-    pass
     
     return visited
 
